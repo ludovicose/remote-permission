@@ -7,15 +7,31 @@ use Exception;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
+/**
+ * Class PermissionCheck
+ * @package Spark\RemotePermission
+ */
 final class PermissionCheck
 {
-    private int $trueStatus;
+    /**
+     * @var int
+     */
+    private  $trueStatus;
 
-    private int $falseStatus;
+    /**
+     * @var int
+     */
+    private  $falseStatus;
 
-    private string $serverAddress;
+    /**
+     * @var string|\Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
+     */
+    private  $serverAddress;
 
-    private string $serverUri;
+    /**
+     * @var string|\Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
+     */
+    private  $serverUri;
 
     /**
      * PermissionCheck constructor.
