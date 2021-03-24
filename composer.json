@@ -1,0 +1,21 @@
+{
+    "name": "ludovicose/remote-permission",
+    "description": "Check user permission in remote server",
+    "type": "library",
+    "require": {
+        "guzzlehttp/guzzle": "^7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Spark\\RemotePermission\\": "src"
+        }
+
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Spark\\RemotePermission\\RemotePermissionServiceProvider"
+            ]
+        }
+    }
+}
