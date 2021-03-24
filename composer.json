@@ -2,6 +2,7 @@
     "name": "ludovicose/remote-permission",
     "description": "Check user permission in remote server",
     "type": "library",
+    "license": "MIT",
     "require": {
         "guzzlehttp/guzzle": "^7.2"
     },
