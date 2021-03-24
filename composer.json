@@ -15,12 +15,11 @@
         "psr-4": {
             "Spark\\RemotePermission\\": "src/"
         }
-
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Spark\\RemotePermission\\RemotePermissionServiceProvider"
+                "Spark\\RemotePermission\\Providers\\RemotePermissionServiceProvider"
             ]
         }
     },
