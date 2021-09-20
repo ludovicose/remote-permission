@@ -16,22 +16,22 @@ final class PermissionCheck
     /**
      * @var int
      */
-    private  $trueStatus;
+    private $trueStatus;
 
     /**
      * @var int
      */
-    private  $falseStatus;
+    private $falseStatus;
 
     /**
      * @var string|\Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
      */
-    private  $serverAddress;
+    private $serverAddress;
 
     /**
      * @var string|\Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
      */
-    private  $serverUri;
+    private $serverUri;
 
     /**
      * PermissionCheck constructor.
@@ -39,9 +39,9 @@ final class PermissionCheck
     public function __construct()
     {
         $this->serverAddress = config('permission.server-address');
-        $this->serverUri = config('permission.server-uri');
-        $this->trueStatus = (int)config('permission.true-status');
-        $this->falseStatus = (int)config('permission.false-status');
+        $this->serverUri     = config('permission.server-uri');
+        $this->trueStatus    = (int)config('permission.true-status');
+        $this->falseStatus   = (int)config('permission.false-status');
     }
 
     /**
@@ -60,9 +60,9 @@ final class PermissionCheck
         $response = Http::get((string)$path);
 
         if (in_array($response->status(), [$this->trueStatus, $this->falseStatus])) {
-            return $response->status();
+            return $response->status() == $this->trueStatus;
         }
 
-        throw new Exception('Пришел некорректный ответ от сервера', $response->status());
+        throw new Exception('Нету такого доступа', $response->status());
     }
 }
