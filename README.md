@@ -1,6 +1,5 @@
 # Remote-permission
 
-
 ### Установка
 ```shell
 $ composer require ludovicose/remote-permission
