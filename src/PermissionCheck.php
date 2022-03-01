@@ -57,7 +57,7 @@ final class PermissionCheck
             ->replace('{permission}', $permission)
             ->prepend($this->serverAddress);
 
-        $response = Http::get((string)$path);
+        $response = Http::retry(3, 100)->get((string)$path);
 
         if (in_array($response->status(), [$this->trueStatus, $this->falseStatus])) {
             return $response->status() == $this->trueStatus;
