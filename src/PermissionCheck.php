@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Spark\RemotePermission;
+namespace Ludovicose\RemotePermission;
 
 use Exception;
 use Illuminate\Support\Facades\Http;
@@ -13,45 +13,31 @@ use Illuminate\Support\Str;
  */
 final class PermissionCheck
 {
-    /**
-     * @var int
-     */
-    private $trueStatus;
+    private int $trueStatus;
 
-    /**
-     * @var int
-     */
-    private $falseStatus;
+    private int $falseStatus;
 
-    /**
-     * @var string|\Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
-     */
-    private $serverAddress;
+    private string $serverAddress;
 
-    /**
-     * @var string|\Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
-     */
-    private $serverUri;
+    private string $serverUri;
 
-    /**
-     * PermissionCheck constructor.
-     */
+    private bool $debug;
+
     public function __construct()
     {
         $this->serverAddress = config('permission.server-address');
         $this->serverUri     = config('permission.server-uri');
         $this->trueStatus    = (int)config('permission.true-status');
         $this->falseStatus   = (int)config('permission.false-status');
+        $this->debug         = config('permission.debug');
     }
 
-    /**
-     * @param int $userId
-     * @param string $permission
-     * @return mixed
-     * @throws Exception
-     */
-    public function check(int $userId, string $permission)
+    public function check(int $userId, string $permission): bool
     {
+        if ($this->debug) {
+            return true;
+        }
+
         $path = Str::of($this->serverUri)
             ->replace('{userId}', $userId)
             ->replace('{permission}', $permission)

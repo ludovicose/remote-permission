@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Spark\RemotePermission\Providers;
+namespace Ludovicose\RemotePermission\Providers;
 
 use Illuminate\Contracts\Auth\Access\Authorizable;
 use Illuminate\Contracts\Auth\Access\Gate;
 use Illuminate\Support\ServiceProvider;
-use Spark\RemotePermission\PermissionCheck;
+use Ludovicose\RemotePermission\PermissionCheck;
 
 final class RemotePermissionServiceProvider extends ServiceProvider
 {

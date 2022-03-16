@@ -7,22 +7,31 @@
         "framework",
         "laravel"
     ],
+    "homepage": "https://github.com/ludovicose/remote-permission",
+    "authors": [
+        {
+            "name": "Aibek Muratbekov",
+            "email": "aibek.muratbekov@gmail.com"
+        }
+    ],
     "require": {
-        "php": ">=7.2",
+        "php": "^8.1",
         "guzzlehttp/guzzle": ">=6.3"
+    },
+    "require-dev": {
+        "vimeo/psalm": "^4.18.1",
+        "squizlabs/php_codesniffer": "3.*"
     },
     "autoload": {
         "psr-4": {
-            "Spark\\RemotePermission\\": "src"
+            "Ludovicose\\RemotePermission\\": "src"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Spark\\RemotePermission\\Providers\\RemotePermissionServiceProvider"
+                "Ludovicose\\RemotePermission\\Providers\\RemotePermissionServiceProvider"
             ]
         }
-    },
-    "minimum-stability": "dev",
-    "prefer-stable": true
+    }
 }
