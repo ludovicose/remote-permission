@@ -17,10 +17,7 @@ final class RemotePermissionServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->mergeConfigFrom(
-            __DIR__ . '/../config/permission.php',
-            'permission'
-        );
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'permission');
     }
 
     /**
@@ -32,8 +29,9 @@ final class RemotePermissionServiceProvider extends ServiceProvider
     {
         $this->publishes(
             [
-                __DIR__ . '/../config/permission.php' => config_path('permission.php'),
-            ]
+                __DIR__ . '/../config/config.php' => config_path('permission.php'),
+            ],
+            'config'
         );
 
         app(Gate::class)->before(function (Authorizable $user, string $permission) {
