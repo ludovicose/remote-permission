@@ -10,11 +10,10 @@ $ composer require ludovicose/remote-permission
 <?php
 return [
         //...
-        
         /*
          * Package Service Providers...
          */
-        \Spark\RemotePermission\Providers\RemotePermissionServiceProvider::class,
+         \Ludovicose\RemotePermission\Providers\RemotePermissionServiceProvider::class,
         
         //..
 ];
@@ -26,4 +25,6 @@ REMOTE_SERVER_ADDRESS=http://gateway.loc
 REMOTE_SERVER_URI=/gateway/users/{userId}/permission/{permission} 
 REMOTE_TRUE_STATUS_RESPONSE=201
 REMOTE_FALSE_STATUS_RESPONSE=209
+REMOTE_DEBUG=false
+REMOTE_CACHE_TIME=1800
 ```

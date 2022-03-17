@@ -1,9 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Spark\RemotePermission;
+namespace Ludovicose\RemotePermission;
 
 use Exception;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
@@ -13,44 +14,48 @@ use Illuminate\Support\Str;
  */
 final class PermissionCheck
 {
-    /**
-     * @var int
-     */
-    private $trueStatus;
+    private int $trueStatus;
 
-    /**
-     * @var int
-     */
-    private $falseStatus;
+    private int $falseStatus;
 
-    /**
-     * @var string|\Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
-     */
-    private $serverAddress;
+    private string $serverAddress;
 
-    /**
-     * @var string|\Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
-     */
-    private $serverUri;
+    private string $serverUri;
 
-    /**
-     * PermissionCheck constructor.
-     */
+    private bool $debug;
+
+    private int $ttl;
+
     public function __construct()
     {
         $this->serverAddress = config('permission.server-address');
         $this->serverUri     = config('permission.server-uri');
         $this->trueStatus    = (int)config('permission.true-status');
         $this->falseStatus   = (int)config('permission.false-status');
+        $this->ttl           = (int)config('permission.ttl');
+        $this->debug         = config('permission.debug');
     }
 
-    /**
-     * @param int $userId
-     * @param string $permission
-     * @return mixed
-     * @throws Exception
-     */
-    public function check(int $userId, string $permission)
+    public function check(int $userId, string $permission): bool
+    {
+        if ($this->debug) {
+            return true;
+        }
+
+        $response = Cache::remember(
+            "remote_permission_check_{$userId}_permission_{$permission}",
+            $this->ttl,
+            fn() => $this->hasPermission($userId, $permission)
+        );
+
+        if (in_array($response, [$this->trueStatus, $this->falseStatus])) {
+            return $response == $this->trueStatus;
+        }
+
+        throw new Exception('Нету такого доступа', $response->status());
+    }
+
+    private function hasPermission(int $userId, string $permission): int
     {
         $path = Str::of($this->serverUri)
             ->replace('{userId}', $userId)
@@ -59,10 +64,6 @@ final class PermissionCheck
 
         $response = Http::retry(3, 100)->get((string)$path);
 
-        if (in_array($response->status(), [$this->trueStatus, $this->falseStatus])) {
-            return $response->status() == $this->trueStatus;
-        }
-
-        throw new Exception('Нету такого доступа', $response->status());
+        return $response->status();
     }
 }
