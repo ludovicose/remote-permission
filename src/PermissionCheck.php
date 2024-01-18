@@ -26,6 +26,8 @@ final class PermissionCheck
 
     private int $ttl;
 
+    private bool $verify;
+
     public function __construct()
     {
         $this->serverAddress = config('permission.server-address');
@@ -34,6 +36,7 @@ final class PermissionCheck
         $this->falseStatus   = (int)config('permission.false-status');
         $this->ttl           = (int)config('permission.ttl');
         $this->debug         = config('permission.debug');
+        $this->verify        = (bool)config('permission.ssl_verify');
     }
 
     public function check(int $userId, string $permission): bool
@@ -62,7 +65,13 @@ final class PermissionCheck
             ->replace('{permission}', $permission)
             ->prepend($this->serverAddress);
 
-        $response = Http::retry(3, 100)->get((string)$path);
+        $query = Http::retry(3, 100);
+
+        if (!$this->verify) {
+            $query = $query->withoutVerifying();
+        }
+
+        $response = $query->get((string)$path);
 
         return $response->status();
     }
