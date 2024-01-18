@@ -7,4 +7,5 @@ return [
     'false-status'   => env('REMOTE_FALSE_STATUS_RESPONSE', 209),
     'ttl'            => env('REMOTE_CACHE_TIME', 1800),
     'debug'          => env('REMOTE_DEBUG', false),
+    'ssl_verify'     => env('REMOTE_SSL_VERIFY', false)
 ];
